@@ -1,0 +1,8 @@
+{
+    "sql_db_host": "mysql",
+    "sql_db_user": "root",
+    "sql_db_pass": "password",
+    "sql_db_name": "mang_xa_hoi_db",
+    "site_url": "http://localhost:8081",
+    "purchase_code": "c1029962-b6e1-4ac3-998b-5afb2e92e9f2"
+}
