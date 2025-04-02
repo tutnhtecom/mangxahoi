@@ -1,1 +1,1 @@
-# mang_xa_hoi 11
+Cấu trúc truy cập
