@@ -4,7 +4,7 @@
 //     exit();
 // }
 if ($wo['loggedin'] == true) {
-	if (!empty($_COOKIE['last_sidebar_update'])) {
+    if (!empty($_COOKIE['last_sidebar_update'])) {
         if ($_COOKIE['last_sidebar_update'] < (time() - 120)) {
             Wo_CleanCache();
         }
