@@ -6,8 +6,9 @@ $api_version  = version(); //'1.5.2'
 
 $applications = [ 'phone','windows_app'];
 require_once('components/app_api/app_api_application_type.php');
+// Set data cho type, application
 $data_type_application = get_data_type_application($applications);
-
+// Gán giá trị
 $type = $data_type_application["type"];
 $application = $data_type_application["application"];
 
