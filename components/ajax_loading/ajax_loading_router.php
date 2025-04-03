@@ -1,145 +1,4 @@
 <?php
-// +--------------------------------------\----------------------------------+
-// | @author Deen Doughouz (DoughouzForest)
-// | @author_url 1: http://www.wowonder.com
-// | @author_url 2: http://codecanyon.net/user/doughouzforest
-// | @author_email: wowondersocial@gmail.com
-// +------------------------------------------------------------------------+
-// | WoWonder - The Ultimate Social Networking Platform
-// | Copyright (c) 2017 WoWonder. All rights reserved.
-// +------------------------------------------------------------------------+
-require_once('assets/init.php');
-decryptConfigData();
-
-if (!empty($auto_redirect)) {
-    $checkHTTPS = checkHTTPS();
-    $isURLSSL = strpos($site_url, 'https');
-    if ($isURLSSL !== false) {
-        if (empty($checkHTTPS)) {
-            header("Location: https://" . full_url($_SERVER));
-            exit();
-        }
-    } else if ($checkHTTPS) {
-        header("Location: http://" . full_url($_SERVER));
-        exit();
-    }
-    if (strpos($site_url, 'www') !== false) {
-        if (!preg_match('/www/', $_SERVER['HTTP_HOST'])) {
-            $protocol = ($isURLSSL !== false) ? "https://" : "http://";
-            header("Location: $protocol" . full_url($_SERVER));
-            exit();
-        }
-    }
-    if (preg_match('/www/', $_SERVER['HTTP_HOST'])) {
-        if (strpos($site_url, 'www') === false) {
-            $protocol = ($isURLSSL !== false) ? "https://" : "http://";
-            header("Location: $protocol" . str_replace("www.", "", full_url($_SERVER)));
-            exit();
-        }
-    }
-}
-
-if ($wo['loggedin'] == true) {
-    $update_last_seen = Wo_LastSeen($wo['user']['user_id']);
-} else if (!empty($_SERVER['HTTP_HOST'])) {
-}
-
-if (!empty($_GET)) {
-    foreach ($_GET as $key => $value) {
-        if (!is_array($value)) {
-            $value      = ($key != 'last_url') ? preg_replace('/on[^<>=]+=[^<>]*/m', '', $value) : $value;
-            $value      = preg_replace('/\((.*?)\)/m', '', $value);
-            $_GET[$key] = strip_tags($value);
-        }
-    }
-}
-if (!empty($_REQUEST)) {
-    foreach ($_REQUEST as $key => $value) {
-        if (!is_array($value)) {
-            $value          = preg_replace('/on[^<>=]+=[^<>]*/m', '', $value);
-            $_REQUEST[$key] = strip_tags($value);
-        }
-    }
-}
-if (!empty($_POST)) {
-    foreach ($_POST as $key => $value) {
-        if (!is_array($value)) {
-            $value       = preg_replace('/on[^<>=]+=[^<>]*/m', '', $value);
-            $_POST[$key] = strip_tags($value);
-        }
-    }
-}
-if (!empty($_GET['ref']) && $wo['loggedin'] == false) {
-    $_GET['ref'] = Wo_Secure($_GET['ref']);
-    $ref_user_id = Wo_UserIdFromUsername($_GET['ref']);
-    $user_date   = Wo_UserData($ref_user_id);
-    if (!empty($user_date)) {
-        $_SESSION['ref'] = $user_date['username'];
-    }
-}
-if (!isset($_COOKIE['src'])) {
-    @setcookie('src', '1', time() + 31556926, '/');
-}
-$page = '';
-if ($wo['loggedin'] == true && !isset($_GET['link1'])) {
-    $page = 'home';
-} elseif (isset($_GET['link1'])) {
-    $page = $_GET['link1'];
-}
-if ((!isset($_GET['link1']) && $wo['loggedin'] == false) || (isset($_GET['link1']) && $wo['loggedin'] == false && $page == 'home')) {
-    // if (!$wo['config']['directory_system']) {
-    //     header("Location: " . Wo_SeoLink('index.php?link1=welcome'));
-    //     exit();
-    // }
-
-    $landingPage = $wo['config']['directory_landing_page'];
-    if ($landingPage == 'home') {
-        //$page = 'welcome';
-    } else {
-        header("Location: " . Wo_SeoLink("index.php?link1=$landingPage"));
-        exit();
-    }
-}
-if ($wo['config']['maintenance_mode'] == 1) {
-    if ($wo['loggedin'] == false) {
-        if ($page == 'admincp' || $page == 'admin-cp') {
-            $page = 'welcome';
-        } else {
-            if (empty($_COOKIE['maintenance_access']) || (!empty($_COOKIE['maintenance_access']) && $_COOKIE['maintenance_access'] != 1)) {
-                $page = 'maintenance';
-            }
-        }
-    } else {
-        if (Wo_IsAdmin() === false) {
-            $page = 'maintenance';
-        }
-    }
-}
-if (!empty($_GET['m'])) {
-    $page = 'welcome';
-    setcookie('maintenance_access', '1', time() + 31556926, '/');
-}
-if ($page != 'admincp' && $page != 'admin-cp') {
-    if ($wo["loggedin"] && !empty($wo['user']) && $wo['user']['is_pro'] && !empty($wo["pro_packages"][$wo['user']['pro_type']]) && !empty($wo["pro_packages"][$wo['user']['pro_type']]['max_upload'])) {
-        $wo['config']['maxUpload'] = $wo["pro_packages"][$wo['user']['pro_type']]['max_upload'];
-    }
-}
-$wo['lang_attr'] = 'en';
-$wo['lang_dir'] = 'ltr';
-$wo['lang_og_meta'] = '';
-
-if (!empty($wo["language"]) && !empty($wo['iso']) && in_array($wo["language"], array_keys($wo['iso'])) && !empty($wo['iso'][$wo["language"]])) {
-    $wo['lang_attr'] = $wo['iso'][$wo["language"]]->iso;
-    $wo['lang_dir'] = $wo['iso'][$wo["language"]]->direction;
-    $wo['language_type'] = $wo['iso'][$wo["language"]]->direction;
-}
-foreach ($all_langs as $key => $value) {
-    $iso = '';
-    if (!empty($wo['iso'][$value])) {
-        $iso = $wo['iso'][$value]->iso;
-    }
-    $wo['lang_og_meta'] .= '<link rel="alternate" href="' . $wo['config']['site_url'] . '?lang=' . $value . '" hreflang="' . $iso . '" />';
-}
 if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
     if ($wo['config']['membership_system'] == 1) {
         if ($wo['loggedin'] == true) {
@@ -162,51 +21,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                         break;
                     case 'welcome':
                         include('sources/welcome.php');
-                        break;
-                    case 'reels':
-                        include('sources/reels.php');
-                        break;
-                    case 'directory':
-                        include('sources/directory/directory.php');
-                        break;
-                    case 'directory-posts':
-                        include('sources/directory/posts.php');
-                        break;
-                    case 'directory-users':
-                        include('sources/directory/users.php');
-                        break;
-                    case 'directory-pages':
-                        include('sources/directory/pages.php');
-                        break;
-                    case 'directory-groups':
-                        include('sources/directory/groups.php');
-                        break;
-                    case 'directory-games':
-                        include('sources/directory/games.php');
-                        break;
-                    case 'directory-market':
-                        include('sources/directory/market.php');
-                        break;
-                    case 'directory-movies':
-                        include('sources/directory/movies.php');
-                        break;
-                    case 'directory-jobs':
-                        include('sources/directory/jobs.php');
-                        break;
-                    case 'directory-fundings':
-                        include('sources/directory/fundings.php');
-                        break;
-                    case 'directory-events':
-                        include('sources/directory/events.php');
-                        break;
-                    case 'directory-blogs':
-                        include('sources/directory/blogs.php');
-                        break;
-                    case 'directory-forums':
-                        include('sources/directory/forums.php');
-                        break;
-                    case 'not-logged-in':
-                        include('sources/not-logged-in.php');
                         break;
                     case 'register':
                         include('sources/register.php');
@@ -316,6 +130,12 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                     case 'albums':
                         include('sources/my_albums.php');
                         break;
+                    case 'watch':
+                        include('sources/watch.php');
+                        break;
+                    case 'reels':
+                        include('sources/reels.php');
+                        break;
                     case 'album':
                         include('sources/album.php');
                         break;
@@ -363,9 +183,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                         break;
                     case 'create-blog':
                         include('sources/create_blog.php');
-                        break;
-                    case 'create-ai-blog':
-                        include('sources/create-ai-blog.php');
                         break;
                     case 'read-blog':
                         include('sources/read_blog.php');
@@ -483,6 +300,42 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                         break;
                     case 'sharer':
                         include('sources/sharer.php');
+                        break;
+                    case 'directory':
+                        include('sources/directory/directory.php');
+                        break;
+                    case 'directory-users':
+                        include('sources/directory/users.php');
+                        break;
+                    case 'directory-pages':
+                        include('sources/directory/pages.php');
+                        break;
+                    case 'directory-groups':
+                        include('sources/directory/groups.php');
+                        break;
+                    case 'directory-events':
+                        include('sources/directory/events.php');
+                        break;
+                    case 'directory-games':
+                        include('sources/directory/games.php');
+                        break;
+                    case 'directory-market':
+                        include('sources/directory/market.php');
+                        break;
+                    case 'directory-movies':
+                        include('sources/directory/movies.php');
+                        break;
+                    case 'directory-jobs':
+                        include('sources/directory/jobs.php');
+                        break;
+                    case 'directory-fundings':
+                        include('sources/directory/fundings.php');
+                        break;
+                    case 'directory-blogs':
+                        include('sources/directory/blogs.php');
+                        break;
+                    case 'directory-forums':
+                        include('sources/directory/forums.php');
                         break;
                     case 'movies':
                         include('sources/movies/movies.php');
@@ -619,51 +472,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                     case 'welcome':
                         include('sources/welcome.php');
                         break;
-                    case 'reels':
-                        include('sources/reels.php');
-                        break;
-                    case 'directory':
-                        include('sources/directory/directory.php');
-                        break;
-                    case 'directory-posts':
-                        include('sources/directory/posts.php');
-                        break;
-                    case 'directory-users':
-                        include('sources/directory/users.php');
-                        break;
-                    case 'directory-pages':
-                        include('sources/directory/pages.php');
-                        break;
-                    case 'directory-groups':
-                        include('sources/directory/groups.php');
-                        break;
-                    case 'directory-events':
-                        include('sources/directory/events.php');
-                        break;
-                    case 'directory-games':
-                        include('sources/directory/games.php');
-                        break;
-                    case 'directory-market':
-                        include('sources/directory/market.php');
-                        break;
-                    case 'directory-movies':
-                        include('sources/directory/movies.php');
-                        break;
-                    case 'directory-jobs':
-                        include('sources/directory/jobs.php');
-                        break;
-                    case 'directory-fundings':
-                        include('sources/directory/fundings.php');
-                        break;
-                    case 'directory-blogs':
-                        include('sources/directory/blogs.php');
-                        break;
-                    case 'directory-forums':
-                        include('sources/directory/forums.php');
-                        break;
-                    case 'not-logged-in':
-                        include('sources/not-logged-in.php');
-                        break;
                     case 'register':
                         include('sources/register.php');
                         break;
@@ -737,62 +545,11 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
             }
         } else {
             switch ($page) {
-                case 'vkontakte_callback':
-                    include('sources/vkontakte_callback.php');
-                    break;
-                case 'tiktok_callback':
-                    include('sources/tiktok_callback.php');
-                    break;
                 case 'maintenance':
                     include('sources/maintenance.php');
                     break;
                 case 'welcome':
                     include('sources/welcome.php');
-                    break;
-                case 'reels':
-                    include('sources/reels.php');
-                    break;
-                case 'directory':
-                    include('sources/directory/directory.php');
-                    break;
-                case 'directory-posts':
-                    include('sources/directory/posts.php');
-                    break;
-                case 'directory-users':
-                    include('sources/directory/users.php');
-                    break;
-                case 'directory-pages':
-                    include('sources/directory/pages.php');
-                    break;
-                case 'directory-groups':
-                    include('sources/directory/groups.php');
-                    break;
-                case 'directory-events':
-                    include('sources/directory/events.php');
-                    break;
-                case 'directory-games':
-                    include('sources/directory/games.php');
-                    break;
-                case 'directory-market':
-                    include('sources/directory/market.php');
-                    break;
-                case 'directory-movies':
-                    include('sources/directory/movies.php');
-                    break;
-                case 'directory-jobs':
-                    include('sources/directory/jobs.php');
-                    break;
-                case 'directory-fundings':
-                    include('sources/directory/fundings.php');
-                    break;
-                case 'directory-blogs':
-                    include('sources/directory/blogs.php');
-                    break;
-                case 'directory-forums':
-                    include('sources/directory/forums.php');
-                    break;
-                case 'not-logged-in':
-                    include('sources/not-logged-in.php');
                     break;
                 case 'register':
                     include('sources/register.php');
@@ -864,12 +621,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
         }
     } else {
         switch ($page) {
-            case 'vkontakte_callback':
-                include('sources/vkontakte_callback.php');
-                break;
-            case 'tiktok_callback':
-                include('sources/tiktok_callback.php');
-                break;
             case 'maintenance':
                 include('sources/maintenance.php');
                 break;
@@ -887,51 +638,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                 break;
             case 'welcome':
                 include('sources/welcome.php');
-                break;
-            case 'reels':
-                include('sources/reels.php');
-                break;
-            case 'directory':
-                include('sources/directory/directory.php');
-                break;
-            case 'directory-posts':
-                include('sources/directory/posts.php');
-                break;
-            case 'directory-users':
-                include('sources/directory/users.php');
-                break;
-            case 'directory-pages':
-                include('sources/directory/pages.php');
-                break;
-            case 'directory-groups':
-                include('sources/directory/groups.php');
-                break;
-            case 'directory-events':
-                include('sources/directory/events.php');
-                break;
-            case 'directory-games':
-                include('sources/directory/games.php');
-                break;
-            case 'directory-market':
-                include('sources/directory/market.php');
-                break;
-            case 'directory-movies':
-                include('sources/directory/movies.php');
-                break;
-            case 'directory-jobs':
-                include('sources/directory/jobs.php');
-                break;
-            case 'directory-fundings':
-                include('sources/directory/fundings.php');
-                break;
-            case 'directory-blogs':
-                include('sources/directory/blogs.php');
-                break;
-            case 'directory-forums':
-                include('sources/directory/forums.php');
-                break;
-            case 'not-logged-in':
-                include('sources/not-logged-in.php');
                 break;
             case 'register':
                 include('sources/register.php');
@@ -1029,12 +735,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
             case 'new-game':
                 include('sources/new_games.php');
                 break;
-            case 'watch':
-                include('sources/watch.php');
-                break;
-            case 'reels':
-                include('sources/reels.php');
-                break;
             case 'saved-posts':
                 include('sources/savedPosts.php');
                 break;
@@ -1046,6 +746,12 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                 break;
             case 'albums':
                 include('sources/my_albums.php');
+                break;
+            case 'watch':
+                include('sources/watch.php');
+                break;
+            case 'reels':
+                include('sources/reels.php');
                 break;
             case 'album':
                 include('sources/album.php');
@@ -1094,9 +800,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                 break;
             case 'create-blog':
                 include('sources/create_blog.php');
-                break;
-            case 'create-ai-blog':
-                include('sources/create-ai-blog.php');
                 break;
             case 'read-blog':
                 include('sources/read_blog.php');
@@ -1329,11 +1032,44 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
             case 'withdrawal':
                 include('sources/withdrawal.php');
                 break;
+            case 'directory':
+                include('sources/directory/directory.php');
+                break;
+            case 'directory-users':
+                include('sources/directory/users.php');
+                break;
+            case 'directory-pages':
+                include('sources/directory/pages.php');
+                break;
+            case 'directory-groups':
+                include('sources/directory/groups.php');
+                break;
+            case 'directory-events':
+                include('sources/directory/events.php');
+                break;
+            case 'directory-games':
+                include('sources/directory/games.php');
+                break;
+            case 'directory-market':
+                include('sources/directory/market.php');
+                break;
+            case 'directory-movies':
+                include('sources/directory/movies.php');
+                break;
+            case 'directory-jobs':
+                include('sources/directory/jobs.php');
+                break;
+            case 'directory-fundings':
+                include('sources/directory/fundings.php');
+                break;
+            case 'directory-blogs':
+                include('sources/directory/blogs.php');
+                break;
+            case 'directory-forums':
+                include('sources/directory/forums.php');
+                break;
             case 'explore':
                 include('sources/explore.php');
-                break;
-            case 'switch-account':
-                include('sources/switch-account.php');
                 break;
         }
     }
@@ -1344,51 +1080,6 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
             break;
         case 'welcome':
             include('sources/welcome.php');
-            break;
-        case 'reels':
-            include('sources/reels.php');
-            break;
-        case 'directory':
-            include('sources/directory/directory.php');
-            break;
-        case 'directory-posts':
-            include('sources/directory/posts.php');
-            break;
-        case 'directory-users':
-            include('sources/directory/users.php');
-            break;
-        case 'directory-pages':
-            include('sources/directory/pages.php');
-            break;
-        case 'directory-groups':
-            include('sources/directory/groups.php');
-            break;
-        case 'directory-events':
-            include('sources/directory/events.php');
-            break;
-        case 'directory-games':
-            include('sources/directory/games.php');
-            break;
-        case 'directory-market':
-            include('sources/directory/market.php');
-            break;
-        case 'directory-movies':
-            include('sources/directory/movies.php');
-            break;
-        case 'directory-jobs':
-            include('sources/directory/jobs.php');
-            break;
-        case 'directory-fundings':
-            include('sources/directory/fundings.php');
-            break;
-        case 'directory-blogs':
-            include('sources/directory/blogs.php');
-            break;
-        case 'directory-forums':
-            include('sources/directory/forums.php');
-            break;
-        case 'not-logged-in':
-            include('sources/not-logged-in.php');
             break;
         case 'register':
             include('sources/register.php');
@@ -1432,18 +1123,50 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
         case 'home':
             include('sources/banned.php');
             break;
+        case 'directory':
+            include('sources/directory/directory.php');
+            break;
+        case 'directory-posts':
+            include('sources/directory/posts.php');
+            break;
+        case 'directory-users':
+            include('sources/directory/users.php');
+            break;
+        case 'directory-pages':
+            include('sources/directory/pages.php');
+            break;
+        case 'directory-groups':
+            include('sources/directory/groups.php');
+            break;
+        case 'directory-events':
+            include('sources/directory/events.php');
+            break;
+        case 'directory-games':
+            include('sources/directory/games.php');
+            break;
+        case 'directory-market':
+            include('sources/directory/market.php');
+            break;
+        case 'direcajax_loadtory-movies':
+            include('sources/directory/movies.php');
+            break;
+        case 'directory-jobs':
+            include('sources/directory/jobs.php');
+            break;
+        case 'directory-fundings':
+            include('sources/directory/fundings.php');
+            break;
+        case 'directory-blogs':
+            include('sources/directory/blogs.php');
+            break;
+        case 'directory-forums':
+            include('sources/directory/forums.php');
+            break;
         default:
             include('sources/banned.php');
             break;
     }
 }
 if (empty($wo['content'])) {
-    if ($wo['config']['membership_system'] == 1 && $wo['loggedin'] == true) {
-        include('sources/go_pro.php');
-    } else {
-        include('sources/404.php');
-    }
+    include('sources/404.php');
 }
-echo Wo_Loadpage('container');
-mysqli_close($sqlConnect);
-unset($wo);

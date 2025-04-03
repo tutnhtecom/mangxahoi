@@ -1,4 +1,6 @@
 <?php
+// Get data header
+//------------------------------------------------------------------------------------------------
 if (!empty($auto_redirect)) {
     $checkHTTPS = checkHTTPS();
     $isURLSSL = strpos($site_url, 'https');
@@ -29,7 +31,11 @@ if (!empty($auto_redirect)) {
 
 if ($wo['loggedin'] == true) {
     $update_last_seen = Wo_LastSeen($wo['user']['user_id']);
-} 
+} else if (!empty($_SERVER['HTTP_HOST'])) {
+}
+//------------------------------------------------------------------------------------------------
+// Get data cho value
+
 if (!empty($_GET)) {
     foreach ($_GET as $key => $value) {
         if (!is_array($value)) {
