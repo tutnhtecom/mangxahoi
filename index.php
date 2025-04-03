@@ -1,11 +1,12 @@
 <?php
 
+
 require_once('assets/init.php');
+
 require_once('components/index/index_get_page.php');
 decryptConfigData();
 // Set header
 include("/components/index/index_get_header.php");
-
 // Set data wo, page
 $data   = get_data_page($wo, $all_langs);
 $page   = $data["page"];
