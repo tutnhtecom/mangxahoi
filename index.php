@@ -1,10 +1,8 @@
 <?php
-
-
 require_once('assets/init.php');
-
-require_once('components/index/index_get_page.php');
 decryptConfigData();
+require_once('components/index/index_get_page.php');
+
 // Set header
 include("/components/index/index_get_header.php");
 // Set data wo, page
