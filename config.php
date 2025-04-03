@@ -9,6 +9,7 @@
     $sql_db_name = "mang_xa_hoi_db";
     // Site URL
     $site_url = "http://localhost:8081";
+    
     $auto_redirect = true;
     // Purchase code
     $purchase_code = "c1029962-b6e1-4ac3-998b-5afb2e92e9f2"; // Your purchase code, don't give it to anyone.
