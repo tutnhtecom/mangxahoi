@@ -154,9 +154,7 @@
       }
 
       if (!empty($wo['story']['product_id'])) {
-          echo Wo_LoadPage('header/og-meta-4');
-          // print_r($wo['story']['product']);
-          // exit();
+          echo Wo_LoadPage('header/og-meta-4');       
       }
       ?>
       <?php if (!empty($_SERVER) && !empty($_SERVER['REQUEST_URI'])) {
@@ -256,14 +254,14 @@
           },
           persistNotification: false,
         }]);
-       OneSignal.push(function () {
+        OneSignal.push(function () {
          OneSignal.getUserId(function(userId) {
             push_user_id = userId;
             if (userId != my_id) {
               $.get("<?php echo $wo['config']['site_url'].'/requests.php';?>", {f: 'update_user_device_id', id:push_user_id});
             }
           });
-         OneSignal.on('subscriptionChange', function (isSubscribed) {
+        OneSignal.on('subscriptionChange', function (isSubscribed) {
              if (isSubscribed == false) {
                 $.get("<?php echo $wo['config']['site_url'].'/requests.php';?>", {f: 'remove_user_device_id'});
              } else {
