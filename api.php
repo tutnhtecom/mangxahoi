@@ -10,7 +10,7 @@
 // +------------------------------------------------------------------------+
 require_once('assets/init.php');
 decryptConfigData();
-$api_version = '1.3.1';
+$api_version = version();
 if (empty($_GET['type']) || !isset($_GET['type'])) {
     $json_error_data = array(
         'api_status' => 'failed',
