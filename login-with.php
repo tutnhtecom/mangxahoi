@@ -50,7 +50,7 @@ else if(!empty($_COOKIE['provider']) && in_array($_COOKIE['provider'], $types)){
     $provider = Wo_Secure($_COOKIE['provider']);
 }
 if (!empty($provider) && $provider != 'OkRu') {
-    require_once('assets/libraries/social-login/config.php');
+    require_once('assets/libraries/social-login/conPHPfig.php');
     require_once('assets/libraries/social-login/vendor/autoload.php');
 }
 
