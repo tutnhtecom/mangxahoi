@@ -19,7 +19,9 @@ function env($key) {
     return $value !== false ? $value : null;
 }
 
-
+function response_data(){
+    
+}
 
 function dump_die($data)
 {

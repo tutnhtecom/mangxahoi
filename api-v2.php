@@ -29,7 +29,7 @@ if (empty($server_key)) {
             'error_id' => '1',
             'error_text' => 'Error: 404 POST (server_key) not specified, Admin Panel > API Settings > Manage API Server Key'
         )
-    );
+    );    
     echo json_encode($response_data, JSON_PRETTY_PRINT);
     exit();
 }
