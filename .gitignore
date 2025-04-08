@@ -1,4 +1,5 @@
 /assets/libraries
 /upload/photos
+.env
 /cache
 /000.backup
