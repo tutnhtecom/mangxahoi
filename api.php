@@ -1,5 +1,4 @@
 <?php
-
 require_once('assets/init.php');
 decryptConfigData();
 $api_version = version();

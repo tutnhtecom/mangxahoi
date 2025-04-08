@@ -7,8 +7,8 @@ unset($wo['all_pages'][0]);
 unset($wo['all_pages'][1]);
 unset($wo['all_pages'][2]);
 // Get data từ file assets/includes/data_general.php
-$pages = $admin_pages;
-$wo['mod_pages'] = $mod_pages;
+$pages = $auto_pages;
+$wo['mod_pages'] = $wo_mod_pages;
 
 if (!empty($_GET['page'])) {
     $page = Wo_Secure($_GET['page'], 0);
@@ -74,7 +74,6 @@ if (empty($page_loaded)) {
     header("Location: " . Wo_SeoLink('index.php?link1=admin-cp'));
     exit();
 }
-
 $notify_count = $db->where('recipient_id', 0)->where('admin', 1)->where('seen', 0)->getValue(T_NOTIFICATION, 'COUNT(*)');
 $notifications = $db->where('recipient_id', 0)->where('admin', 1)->where('seen', 0)->orderBy('id', 'DESC')->get(T_NOTIFICATION);
 $old_notifications = $db->where('recipient_id', 0)->where('admin', 1)->where('seen', 0, '!=')->orderBy('id', 'DESC')->get(T_NOTIFICATION, 5);
