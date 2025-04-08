@@ -8,9 +8,11 @@
     $sql_db_pass = env("DB_PASS") ?? 'password';
     // MySQL Database Name
     $sql_db_name = env("DB_NAME") ?? 'mang_xa_hoi_db';
+    //MSQL Port
+    $sql_port = env("DB_PORT") ?? '3306';
     // Site URL
     $site_url = env("APP_URL") ?? 'http://localhost:8081';
-    
+
     $auto_redirect = env("AUTO_REDIRECT") ?? true;
     // Purchase code
     $purchase_code = env("PURCHASE_CODE") ?? null;

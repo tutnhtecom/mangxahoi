@@ -1,13 +1,4 @@
 <?php 
-// +------------------------------------------------------------------------+
-// | @author Deen Doughouz (DoughouzForest)
-// | @author_url 1: http://www.wowonder.com
-// | @author_url 2: http://codecanyon.net/user/doughouzforest
-// | @author_email: wowondersocial@gmail.com   
-// +------------------------------------------------------------------------+
-// | WoWonder - The Ultimate Social Networking Platform
-// | Copyright (c) 2017 WoWonder. All rights reserved.
-// +------------------------------------------------------------------------+
 require_once('config.php');
 require_once('assets/includes/tabels.php');
 $f = '';
@@ -43,7 +34,7 @@ function Wo_CheckMainSession($hash = '') {
 }
 $wo         = array();
 // Connect to SQL Server
-$sqlConnect = mysqli_connect($sql_db_host, $sql_db_user, $sql_db_pass, $sql_db_name, 3306);
+$sqlConnect = mysqli_connect($sql_db_host, $sql_db_user, $sql_db_pass, $sql_db_name, $sql_port);
 function Wo_Secure($string, $censored_words = 1) {
     global $sqlConnect;
     $string = trim($string);
@@ -76,7 +67,6 @@ function unzip_file($file, $destination) {
     $zip->close();
         return true;
 }
-
 $theme_name = 'wowonder';
 $query = mysqli_query($sqlConnect, "SELECT `value` FROM " . T_CONFIG . " WHERE `name` = 'theme'");
 $mysqli_fetch = mysqli_fetch_assoc($query);
