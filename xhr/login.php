@@ -1,4 +1,5 @@
 <?php
+require_once('assets/includes/data_general.php');
 if ($f == 'login') {
     $sessionUserId = null;
     if (!empty($_SESSION['user_id'])) {
@@ -27,9 +28,8 @@ if ($f == 'login') {
             }
         }
         $username = Wo_Secure($_POST['username']);
-        $password = $_POST['password'];
-
-        $result   = Wo_Login($username, $password);
+        $password = $_POST['password'];        
+        $result   = Wo_Login($username, $password);            
         if ($result === false) {
             $errors[] = $error_icon . $wo['lang']['incorrect_username_or_password_label'];
             if ($wo['config']['prevent_system'] == 1) {
@@ -68,16 +68,17 @@ if ($f == 'login') {
                 'location' => $wo['config']['site_url'] . '/unusual-login?type=two-factor'
             );
             $phone               = 1;
-        } else if (Wo_UserActive($_POST['username']) === false) {
+        } else if (Wo_UserActive($_POST['username']) === false) {            
             $_SESSION['code_id'] = Wo_UserIdForLogin($username);
             $data_               = array(
                 'status' => 600,
                 'location' => Wo_SeoLink('index.php?link1=user-activation')
             );
             $phone               = 1;
-        }
-        if (empty($errors) && $phone == 0) {
+        }        
+        if (empty($errors) && $phone == 0) {            
             if ($wo['loggedin'] == true && $username !== $wo['user']['name']) {
+                dump_die(1111);
                 $user_id             = Wo_UserIdForLogin($username);
                 $add = true;
                 if (!empty($wo['switched_accounts'])) {
@@ -127,14 +128,14 @@ if ($f == 'login') {
             Wo_DeleteBadLogins();
             if ($wo['config']['remember_device'] == 1 && !empty($_POST['remember_device']) && $_POST['remember_device'] == 'on') {
                 setcookie("user_id", $session, time() + (10 * 365 * 24 * 60 * 60));
-            }
+            }            
             setcookie('ad-con', htmlentities(json_encode(array(
                 'date' => date('Y-m-d'),
                 'ads' => array()
             ))), time() + (10 * 365 * 24 * 60 * 60));
             $data = array(
-                'status' => 200
-            );
+                'status' => $api_status_success_200
+            );            
             if (!empty($_POST['last_url'])) {
                 $data['location'] = $_POST['last_url'];
             } else {
@@ -145,7 +146,7 @@ if ($f == 'login') {
                 $data['location'] = Wo_SeoLink('index.php?link1=go-pro');
             }
         }
-    }
+    }    
     header("Content-type: application/json");
     if (!empty($errors)) {
         echo json_encode(array(

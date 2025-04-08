@@ -1,4 +1,5 @@
 <?php
+require_once('assets/includes/helper.php');
 require_once('assets/includes/data_general.php');
 cleanConfigData();
 $page  = 'dashboard';
@@ -1415,9 +1416,9 @@ if (!empty($_COOKIE['mode']) && $_COOKIE['mode'] == 'night') {
                                 </a>
                             </li>
                         <?php } ?>
-                        <a class="pow_link" href="https://bit.ly/2R2jrcz" target="_blank">
+                        <a class="pow_link" href="/" target="_blank">
                             <p>Powered by</p>
-                            <img src="https://demo.wowonder.com/themes/default/img/logo.png">
+                            <img src= <?php echo env("APP_URL")  . "/themes/wowonder/img/logo.png" ?> >
                             <b class="badge">v<?php echo $wo['config']['version']; ?></b>
                         </a>
                     </ul>
