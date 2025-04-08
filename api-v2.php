@@ -1,9 +1,9 @@
 <?php
-require_once('assets/includes/data_general.php');
 header_remove('Server');
 header("Content-type: application/json");
 require('assets/init.php');
 require('api/v2/init.php');
+require_once('assets/includes/data_general.php');
 decryptConfigData();
 $wo['loggedin'] = false;
 $response_data  = array();

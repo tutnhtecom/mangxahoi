@@ -5,12 +5,11 @@ decryptConfigData();
 $f = '';
 $s = '';
 if (isset($_GET['f'])) {
-    $f = Wo_Secure($_GET['f'], 0);
+    $f = Wo_Secure($_GET['f'], 0);    
 }
-
 if (isset($_GET['s'])) {
     $s = Wo_Secure($_GET['s'], 0);
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                       
 $hash_id = '';
 if (!empty($_POST['hash_id'])) {
     $hash_id = $_POST['hash_id'];
@@ -27,7 +26,6 @@ if ($f == 'certification' && $s == 'download_user_certification' && !empty($_GET
     $allow_array[] = 'certification';
 }
 $non_login_array = $request_non_login_array;
-
 if ($wo['config']['membership_system'] == 1) {
     $non_login_array[] = 'pro_register';
     $non_login_array[] = 'get_payment_method';
