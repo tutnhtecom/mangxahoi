@@ -87,11 +87,11 @@ if ($f == 'run_updater') {
             "verify_peer_name" => false
         )
     );
-    if (!empty($_GET['purchase_code'])) {
+    if (!empty($_GET['purchase_code'])) {        
         $purchase_code = Wo_Secure($_GET['purchase_code']);
         if (empty($version)) {
             $version = Wo_Secure($_GET['script_version']);
-        }
+        }        
         $siteurl = urlencode($_SERVER['SERVER_NAME']);
         $file = file_get_contents("http://www.wowonder.com/check_for_updates.php?code={$purchase_code}&version=$version&url=$siteurl&check_for=true", false, stream_context_create($arrContextOptions));
         $check = json_decode($file, true);

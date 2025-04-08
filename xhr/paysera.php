@@ -114,12 +114,7 @@ if ($f == 'paysera') {
             }
         }
         if ($stop == 0) {
-            $pro_types_array = array(
-                1,
-                2,
-                3,
-                4
-            );
+            $pro_types_array = $arr_pro_type;
             $pro_type        = 0;
             if (!isset($_GET['pro_type']) || !in_array($_GET['pro_type'], $pro_types_array)) {
                 header("Location: " . Wo_SeoLink('index.php?link1=oops'));

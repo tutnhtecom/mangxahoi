@@ -9,8 +9,6 @@ else
     if ($_POST['request'] == 'initialize')
     {
         if (!empty($_POST['phone']) && !empty($_POST['name']) && !empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && !empty($_POST['amount']) && is_numeric($_POST['amount'])) {
-
-
             $order_id = uniqid().rand(100,1000);
             $customer_id = uniqid().rand(100,1000);
             $name = Wo_Secure($_POST['name']);
@@ -145,12 +143,7 @@ else
         }
         if ($stop == 0)
         {
-            $pro_types_array = array(
-                1,
-                2,
-                3,
-                4
-            );
+            $pro_types_array = $arr_pro_type;
             $pro_type = 0;
             if (!isset($_POST['pro_type']) || !in_array($_POST['pro_type'], $pro_types_array))
             {

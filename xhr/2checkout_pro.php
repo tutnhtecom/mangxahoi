@@ -15,12 +15,7 @@ if ($f == "2checkout_pro") {
             Twocheckout::sandbox(false);
         }
         try {
-            $pro_types_array = array(
-                1,
-                2,
-                3,
-                4
-            );
+            $pro_types_array = $arr_pro_type;
             $pro_type        = 0;
             if (!isset($_POST['type']) || !in_array($_POST['type'], $pro_types_array)) {
                 $data = array(

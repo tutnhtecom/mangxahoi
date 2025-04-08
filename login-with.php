@@ -1,32 +1,9 @@
 <?php
-// +------------------------------------------------------------------------+
-// | @author Deen Doughouz (DoughouzForest)
-// | @author_url 1: http://www.wowonder.com
-// | @author_url 2: http://codecanyon.net/user/doughouzforest
-// | @author_email: wowondersocial@gmail.com   
-// +------------------------------------------------------------------------+
-// | WoWonder - The Ultimate Social Networking Platform
-// | Copyright (c) 2017 WoWonder. All rights reserved.
-// +------------------------------------------------------------------------+
 require_once('assets/init.php');
+require_once('assets/includes/data_general.php');
 decryptConfigData();
 $provider = "";
-$types = array(
-    'Google',
-    'Facebook',
-    'Twitter',
-    'LinkedIn',
-    'Vkontakte',
-    'Instagram',
-    'QQ',
-    'WeChat',
-    'Discord',
-    'Mailru',
-    'OkRu',
-    'TikTok',
-    'WordPress'
-);
-
+$types = $login_with_types;
 if (!empty($_GET['state']) && $_GET['state'] == 'OkRu' && !empty($_GET['code'])) {
     $_GET['provider'] = 'OkRu';
 }
