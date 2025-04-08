@@ -203,5 +203,5 @@ if (!empty($posts)) {
 }
 // ********** Live **********
 header("Content-type: application/json");
-echo json_encode(["status" => 200, "message" => "success"]);
+echo json_encode(["status" => $api_status_success_200, "message" => "success"]);
 exit();

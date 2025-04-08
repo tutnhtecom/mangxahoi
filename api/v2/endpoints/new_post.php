@@ -162,7 +162,7 @@ if (isset($_FILES['postVideo']['name']) && empty($mediaFilename)) {
         $error_code    = 8;
         $error_message = 'invalid file';
         $response_data = array(
-            'api_status' => $api_status_errors,
+            'api_status' => $api_status_errors_404,
             'errors' => array(
                 'error_id' => $error_code,
                 'error_text' => $error_message

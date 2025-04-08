@@ -1,6 +1,7 @@
 <?php 
 require_once('config.php');
 require_once('assets/includes/tabels.php');
+require_once('assets/includes/data_general.php');
 $f = '';
 $data = array();
 $s = '';
@@ -124,27 +125,27 @@ if ($f == 'run_updater') {
                                     if (file_exists('wonderful.zip')) {
                                         unlink('wonderful.zip');
                                     }
-                                    $data['status'] = 200;
+                                    $data['status'] = $api_status_success_200;
                                 } else {
-                                    $data['status'] = 400;
+                                    $data['status'] = $api_status_errors_400;
                                     $data['ERROR_NAME'] = 'Error found while updating, please update your site manually.';
                                 }
                             }
                         }  else {
-                            $data['status'] = 400;
+                            $data['status'] = $api_status_errors_400;
                             $data['ERROR_NAME'] = 'Error found while updating, please update your site manually.';
                         }
                     }
                 } else {
-                    $data['status'] = 400;
+                    $data['status'] = $api_status_errors_400;
                     $data['ERROR_NAME'] = 'Error found while updating, please update your site manually.';
                 } 
             } else {
-                $data['status'] = 400;
+                $data['status'] = $api_status_errors_400;
                 $data['ERROR_NAME'] = $check['ERROR_NAME'];
             }
         } else {
-            $data['status'] = 400;
+            $data['status'] = $api_status_errors_400;
             $data['ERROR_NAME'] = 'Error found while updating, please update your site manually.';
         } 
     }

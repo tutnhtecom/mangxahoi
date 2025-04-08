@@ -22,7 +22,7 @@ if ($application == 'windows_app') {
     $server_key = (!empty($_POST['server_key'])) ? Wo_Secure($_POST['server_key'], 0) : false;
     if (empty($server_key)) {
         $response_data = array(
-            'api_status' => $api_status_errors,
+            'api_status' => $api_status_errors_404,
             'errors' => array(
                 'error_id' => '1',
                 'error_text' => 'Error: 404 POST (server_key) not specified, Admin Panel > API Settings > Manage API Server Key'
@@ -33,7 +33,7 @@ if ($application == 'windows_app') {
     }
     if ($server_key != $wo['config']['widnows_app_api_key']) {
         $response_data = array(
-            'api_status' => $api_status_errors,
+            'api_status' => $api_status_errors_404,
             'errors' => array(
                 'error_id' => '1',
                 'error_text' => 'Error: invalid server key'

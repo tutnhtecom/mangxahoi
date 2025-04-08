@@ -1,6 +1,7 @@
 <?php
-$api_status_errors = '404';
-$api_status_success= '200';
+$api_status_errors_404  = '404';
+$api_status_errors_400  = '400';
+$api_status_success_200     = '200';
 $check_out_type = [ 'pro','wallet', 'fund'];
 $arr_pro_type = [1, 2, 3, 4];
 $app_api_applications = [ 'phone','windows_app'];
