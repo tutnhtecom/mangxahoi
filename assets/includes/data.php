@@ -189,14 +189,15 @@ $emo                      = array(
 );
 $wo["countries"]          = array(
     "united-states" => "United States",
-    "china" => "China",
-    "india" => "India",
-    "iran" => "Iiran",
-    "japan" => "japan",
-    "turkey" => "Turkey",
-    "russia" => "Russia",
-    "france" => "France",
-    "united-kingdom" => "United Kingdom"
+    "china"         => "China",
+    "india"         => "India",
+    "iran"          => "Iiran",
+    "japan"         => "japan",
+    "turkey"        => "Turkey",
+    "russia"        => "Russia",
+    "france"        => "France",
+    "united-kingdom"=> "United Kingdom",
+    "viet-nam"     => "Việt Nam"
 );
 $wo["film-genres"]        = array(
     "action" => "Action",
@@ -663,7 +664,6 @@ $wo["employment_type"]    = array(
     "7" => "apprenticeship",
     "8" => "seasonal"
 );
-
 $wo['encryptedKeys'] = [
     'authy_token',
     'recaptcha_secret_key',
