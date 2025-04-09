@@ -2,4 +2,4 @@
 /upload/photos
 .env
 /cache
-/000.backup
+/_backup
